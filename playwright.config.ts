@@ -21,7 +21,11 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [['list'], ['html', { open: 'true' }]],
+  reporter: [
+    ['list'],
+    ['html', { open: 'true' }],
+    ['allure-playwright', { resultsDir: 'allure-results' }]
+  ],
   use: {
     baseURL: process.env.BASE_URL ?? 'https://rahulshettyacademy.com/client/#/auth/login',
     trace: 'retain-on-failure',

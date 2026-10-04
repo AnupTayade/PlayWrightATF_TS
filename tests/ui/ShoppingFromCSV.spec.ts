@@ -2,7 +2,7 @@ import path from 'node:path';
 import { test } from '../../src/fixtures/test.fixture';
 import { readCsv } from '../../src/utils/csv';
 
-test('customer can place an order for a product from CSV', async ({ loginPage, dashboardPage, cartPage, paymentPage }) => {
+test('customer can place an order for a product from CSV', async ({ page, loginPage, dashboardPage, cartPage, paymentPage }, testInfo) => {
   const products = await readCsv(path.join(process.cwd(), 'test-data', 'products.csv'));
   const productName = products[0]?.name;
 
@@ -20,4 +20,8 @@ test('customer can place an order for a product from CSV', async ({ loginPage, d
   await cartPage.proceedToCheckout();
   await paymentPage.enterCountry('India');
   await paymentPage.placeOrder();
+  await testInfo.attach('order-confirmation-screen', {
+    body: await page.screenshot({ fullPage: true }),
+    contentType: 'image/png'
+  });
 });

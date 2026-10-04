@@ -2,6 +2,8 @@
 
 Playwright automation framework for UI and API testing of the ecommerce client.
 
+See the [Framework Guide](docs/framework-guide.md) for architecture, test patterns, configuration details, and instructions for extending the framework.
+
 ## Prerequisites
 
 - Git
@@ -58,12 +60,17 @@ Use `stg` or `prod` in place of `qa` as needed. The selected `.env.<environment>
 | Command | Purpose |
 | --- | --- |
 | `npm test` | Run all API and UI tests |
+| `npm run test:allure` | Run all tests sequentially and generate a fresh Allure report |
 | `npm run test:ui` | Run UI tests |
 | `npm run test:api` | Run API and data-validation tests |
 | `npm run test:headed` | Run the suite with a visible browser |
 | `npx playwright test tests/ui/ShoppingFromCSV.spec.ts` | Run the CSV-driven order scenario |
 | `npm run typecheck` | Run the TypeScript check |
 | `npm run report` | Open the latest HTML report after a test run |
+| `npm run allure:generate` | Generate an Allure report from files currently in `allure-results` |
+| `npm run allure:open` | Open the generated Allure report |
+
+The Allure Playwright reporter writes raw results to `allure-results/` during test runs. Use `npm run test:allure` for a clean full run and fresh report, then `npm run allure:open` to view it. Do not open `allure-report/index.html` directly from disk; Allure must serve its report assets. Manual `npm test` runs can leave earlier files in `allure-results`; `npm run allure:generate` includes the files currently in that folder. The Allure 3 CLI is included as a project dependency and does not require a separate Java installation. Both Allure output directories are ignored by Git.
 
 ## Current Scenarios
 
