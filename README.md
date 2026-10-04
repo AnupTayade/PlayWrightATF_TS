@@ -1,6 +1,6 @@
 # Playwright ATF
 
-Playwright automation framework for UI and API testing of the ecommerce client.
+Playwright automation framework for UI and API testing of the eCommerce client.Only for Study Purpose 
 
 ## Prerequisites
 
