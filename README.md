@@ -13,14 +13,20 @@ Playwright automation framework for UI and API testing of the ecommerce client.
 Clone the repository, install dependencies, and install the Chromium browser used by the current Playwright project:
 
 ```powershell
-git clone <repository-url>
+git clone https://github.com/AnupTayade/PlayWrightATF_TS.git
 cd PlaywrightATF
 npm install
 npx playwright install chromium
 ```
 
-Create your local default environment file if it does not exist:
+Create your local default environment file if it does not exist and add user details
 
+Ex: .env
+BASE_URL=https://rahulshettyacademy.com/client/#/auth/login
+API_BASE_URL=https://rahulshettyacademy.com
+TEST_USER_EMAIL=
+TEST_USER_PASSWORD=
+HEADLESS=false
 ```powershell
 if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 ```
