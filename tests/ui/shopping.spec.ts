@@ -19,3 +19,13 @@ test('customer can add a product and reach payment', async ({ loginPage, dashboa
   await cartPage.proceedToCheckout();
   await paymentPage.enterCountry('India');
 });
+
+test('User can add multiple products to the cart and remove one', async ({ loginPage, dashboardPage, cartPage }) => {
+  await loginPage.open();
+  await loginPage.login();
+  await dashboardPage.addProductToCart('ZARA COAT 3');
+  await dashboardPage.addProductToCart('ADIDAS ORIGINAL');
+  await dashboardPage.addProductToCart('IPHONE 13 PRO');
+  await dashboardPage.openCart();
+  await cartPage.removeProduct('ZARA COAT 3');
+});
