@@ -1,4 +1,4 @@
-import { test } from '../../src/fixtures/test.fixture';
+import { expect, test } from '../../src/fixtures/test.fixture';
 
 test.describe.configure({ mode: 'serial' });
 
@@ -16,6 +16,7 @@ test('customer can add a product and reach payment', async ({ loginPage, dashboa
   await dashboardPage.addProductToCart('ZARA COAT 3');
   await dashboardPage.openCart();
   await cartPage.expectProduct('ZARA COAT 3');
+  expect(await cartPage.getProductPrice('ZARA COAT 3')).toBeGreaterThan(10000);
   await cartPage.proceedToCheckout();
   await paymentPage.enterCountry('India');
 });
