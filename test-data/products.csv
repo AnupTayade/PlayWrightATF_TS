@@ -1,2 +1,4 @@
-name,category
-ZARA COAT 3, fashion
+Execute ,TestName,name,category,Country ,Email
+no,customer can place an order for a Clothes ,ZARA COAT 3, fashion,India,anup.Test@gmail.com
+no,customer can place an order for a phone ,iphone 13 pro, fashion,India,anup.Test@gmail.com
+Yes,customer can place an order for a Shoes,ADIDAS ORIGINAL, fashion,India,anup.Test@gmail.com

@@ -1,27 +1,45 @@
 import path from 'node:path';
 import { test } from '../../src/fixtures/test.fixture';
-import { readCsv } from '../../src/utils/csv';
+import { readCsvSync } from '../../src/utils/csv';
+import type { DataRow } from '../../src/utils/excel';
 
-test('customer can place an order for a product from CSV', async ({ page, loginPage, dashboardPage, cartPage, paymentPage }, testInfo) => {
-  const products = await readCsv(path.join(process.cwd(), 'test-data', 'products.csv'));
-  const productName = products[0]?.name;
+const rows = readCsvSync(path.join(process.cwd(), 'test-data', 'products.csv'));
 
-  if (typeof productName !== 'string' || !productName.trim()) {
-    throw new Error('No product name found in test-data/products.csv');
+function getRequiredValue(row: DataRow, column: string): string {
+  const value = row[column];
+  if (typeof value !== 'string' || !value.trim()) {
+    throw new Error(`Missing ${column} value in test-data/products.csv`);
   }
 
-  const product = productName.trim();
+  return value.trim();
+}
 
-  await loginPage.open();
-  await loginPage.login();
-  await dashboardPage.addProductToCart(product);
-  await dashboardPage.openCart();
-  await cartPage.expectProduct(product);
-  await cartPage.proceedToCheckout();
-  await paymentPage.enterCountry('India');
-  await paymentPage.placeOrder();
-  await testInfo.attach('order-confirmation-screen', {
-    body: await page.screenshot({ fullPage: true }),
-    contentType: 'image/png'
-  });
+test.describe('Shopping from CSV', () => {
+  for (const row of rows) {
+    if (typeof row.Execute !== 'string' || row.Execute.trim().toLowerCase() !== 'yes') {
+      continue;
+    }
+    const executeValue = getRequiredValue(row, 'Execute');
+    const testName = getRequiredValue(row, 'TestName');
+    const product = getRequiredValue(row, 'name');
+    const country = getRequiredValue(row, 'Country');
+if (executeValue.toLowerCase() !== 'yes') {
+      continue;
+    }
+    test(testName, async ({ page, loginPage, dashboardPage, cartPage, paymentPage }, testInfo) => {
+      await loginPage.open();
+      await loginPage.login();
+      await dashboardPage.addProductToCart(product);
+      await dashboardPage.openCart();
+      await cartPage.expectProduct(product);
+      await cartPage.proceedToCheckout();
+      await paymentPage.expectProduct(product);
+      await paymentPage.enterCountry(country);
+      await paymentPage.placeOrder();
+      await testInfo.attach('order-confirmation-screen', {
+        body: await page.screenshot({ fullPage: true }),
+        contentType: 'image/png'
+      });
+    });
+  }
 });
